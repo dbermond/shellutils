@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# truepng - POSIX-compliant shell script to help running TruePNG through Wine
+#
+# Written in 2016 by Daniel Bermond < yahoo.com: danielbermond >
+#
+# To the extent possible under law, the author(s) have dedicated all
+# copyright  and related and neighboring rights to this software to the
+# public domain worldwide. This software is distributed without any
+# warranty.
+#
+# You should have received a copy of the CC0 Public Domain Dedication
+# along with this software. If not, see
+# <http://creativecommons.org/publicdomain/zero/1.0/>.
+
+exedir="/usr/share/truepng"
+exefile="TruePNG.exe"
+
+# check if requirements are installed (wine and TruePNG.exe)
+which wine >/dev/null 2>&1 ||
+{
+    echo "error: wine not found"      >&2;
+    echo "       please install wine" >&2;
+    exit 1;
+}
+test -f "${exedir}/${exefile}" ||
+{
+    echo "error: ${exefile} not found"        >&2;
+    echo "       please copy it to ${exedir}" >&2;
+    exit 1;
+}
+
+# Parse command line arguments and build a string with options
+# and PNG files to be passed to TruePNG. We cannot simply pass
+# the untouched command line arguments to TruePNG because it's
+# necessary to map paths for wine.
+for arg in "$@"
+do
+    # test if command line argument is a valid file
+    if [ -f "$arg" ]
+    then
+        # map path for wine using default WINEPREFIX
+        filepath="$(echo "$(cd "$(dirname "$arg")"; pwd)/$(basename "$arg")")"
+        pngfiles="${pngfiles} ${HOME}"/.wine/dosdevices/z\:"$filepath"
+    else
+        # if not a valid file, just store it (should be an option)
+        options="${options} ${arg}"
+    fi
+done
+
+# delete the first character of strings (a blank character)
+pngfiles="$(printf %s "$pngfiles" | sed 's/.//')"
+ options="$(printf %s "$options"  | sed 's/.//')"
+
+# execute TruePNG through wine
+cd "$exedir"
+wine ./"$exefile" $options $pngfiles
