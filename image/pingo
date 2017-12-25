@@ -46,14 +46,14 @@ command -v wine >/dev/null 2>&1 ||
 }
 test -f "${pingo_dir}/${pingo_file}" ||
 {
-    printf '%s\n' "error: '${pingo_file}' not found"        >&2;
+    printf '%s\n' "error: '${pingo_file}' not found"         >&2;
     printf '%s\n' "       please copy it to '${pingo_dir}/'" >&2;
     exit 1;
 }
 
 # Parse command line arguments and build a string with options
 # and PNG/JPG files to be passed to pingo. We cannot simply
-# pass# the untouched command line arguments to pingo because
+# pass the untouched command line arguments to pingo because
 # it's necessary to map paths for wine.
 for arg in "$@"
 do

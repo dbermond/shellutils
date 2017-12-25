@@ -46,7 +46,7 @@ command -v wine >/dev/null 2>&1 ||
 }
 test -f "${truepng_dir}/${truepng_file}" ||
 {
-    printf '%s\n' "error: '${truepng_file}' not found"        >&2;
+    printf '%s\n' "error: '${truepng_file}' not found"         >&2;
     printf '%s\n' "       please copy it to '${truepng_dir}/'" >&2;
     exit 1;
 }
