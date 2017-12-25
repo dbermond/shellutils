@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2086
 
 # pingo - POSIX-compliant shell script to help running pingo through Wine
 #
@@ -16,6 +17,15 @@
 pingo_dir='/usr/share/pingo'
 pingo_file='pingo.exe'
 
+# cd_error function: print a message indicating a failed cd command and exit
+# arguments: $1 - the directory that failed to cd into
+# return value: none
+# return code (status): not relevant, will exit the program
+cd_error() {
+    printf '%s\n' "error: could not cd into '${1%/}/' directory" >&2
+    exit 1
+}
+
 # check if requirements are installed (wine and pingo.exe)
 command -v wine >/dev/null 2>&1 ||
 {
@@ -26,7 +36,7 @@ command -v wine >/dev/null 2>&1 ||
 test -f "${pingo_dir}/${pingo_file}" ||
 {
     printf '%s\n' "error: '${pingo_file}' not found"        >&2;
-    printf '%s\n' "       please copy it to '${pingo_dir}'" >&2;
+    printf '%s\n' "       please copy it to '${pingo_dir}/'" >&2;
     exit 1;
 }
 
@@ -40,8 +50,8 @@ do
     if [ -f "$arg" ] 
     then
         # map path for wine using default WINEPREFIX
-        filepath="$(printf '%s' "$(cd "$(dirname "$arg")"; pwd)/$(basename "$arg")")"
-        imgfiles="${imgfiles} ${HOME}"/.wine/dosdevices/z\:"$filepath"
+        fullpath="$(printf '%s' "$(cd "$(dirname "$arg")" || cd_error "$(dirname "$arg")"; pwd)/$(basename "$arg")")"
+        imgfiles="${imgfiles} ${HOME}"/.wine/dosdevices/z\:"$fullpath"
     else
         # if not a valid file, just store it (should be an option)
         pingo_opts="${pingo_opts} ${arg}"
@@ -53,5 +63,5 @@ done
  pingo_opts="$(printf '%s' "$pingo_opts" | sed 's/.//')"
 
 # execute pingo through wine
-cd "$pingo_dir"
+cd "$pingo_dir" || cd_error "$pingo_dir"
 wine ./"$pingo_file" $pingo_opts $imgfiles
