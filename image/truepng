@@ -13,20 +13,20 @@
 # along with this software. If not, see
 # <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-truepng_dir="/usr/share/truepng"
-truepng_file="TruePNG.exe"
+truepng_dir='/usr/share/truepng'
+truepng_file='TruePNG.exe'
 
 # check if requirements are installed (wine and TruePNG.exe)
 which wine >/dev/null 2>&1 ||
 {
-    echo "error: wine not found"      >&2;
-    echo "       please install wine" >&2;
+    echo 'error: wine not found'      >&2;
+    echo '       please install wine' >&2;
     exit 1;
 }
 test -f "${truepng_dir}/${truepng_file}" ||
 {
-    echo "error: ${truepng_file} not found"        >&2;
-    echo "       please copy it to ${truepng_dir}" >&2;
+    echo "error: '${truepng_file}' not found"        >&2;
+    echo "       please copy it to '${truepng_dir}'" >&2;
     exit 1;
 }
 
@@ -49,8 +49,8 @@ do
 done
 
 # delete the first character of strings (a blank character)
-     pngfiles="$(printf %s "$pngfiles"     | sed 's/.//')"
- truepng_opts="$(printf %s "$truepng_opts" | sed 's/.//')"
+     pngfiles="$(printf '%s' "$pngfiles"     | sed 's/.//')"
+ truepng_opts="$(printf '%s' "$truepng_opts" | sed 's/.//')"
 
 # execute TruePNG through wine
 cd "$truepng_dir"
