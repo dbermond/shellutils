@@ -13,8 +13,8 @@
 # along with this software. If not, see
 # <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-exedir="/usr/share/pingo"
-exefile="pingo.exe"
+pingo_dir="/usr/share/pingo"
+pingo_file="pingo.exe"
 
 # check if requirements are installed (wine and pingo.exe)
 which wine >/dev/null 2>&1 ||
@@ -23,10 +23,10 @@ which wine >/dev/null 2>&1 ||
     echo "       please install wine" >&2;
     exit 1;
 }
-test -f "${exedir}/${exefile}" ||
+test -f "${pingo_dir}/${pingo_file}" ||
 {
-    echo "error: ${exefile} not found"        >&2;
-    echo "       please copy it to ${exedir}" >&2;
+    echo "error: ${pingo_file} not found"        >&2;
+    echo "       please copy it to ${pingo_dir}" >&2;
     exit 1;
 }
 
@@ -44,14 +44,14 @@ do
         imgfiles="${imgfiles} ${HOME}"/.wine/dosdevices/z\:"$filepath"
     else
         # if not a valid file, just store it (should be an option)
-        options="${options} ${arg}"
+        pingo_opts="${pingo_opts} ${arg}"
     fi
 done
 
 # delete the first character of strings (a blank character)
-imgfiles="$(printf %s "$imgfiles" | sed 's/.//')"
- options="$(printf %s "$options"  | sed 's/.//')"
+   imgfiles="$(printf %s "$imgfiles"   | sed 's/.//')"
+ pingo_opts="$(printf %s "$pingo_opts" | sed 's/.//')"
 
 # execute pingo through wine
-cd "$exedir"
-wine ./"$exefile" $options $imgfiles
+cd "$pingo_dir"
+wine ./"$pingo_file" $pingo_opts $imgfiles

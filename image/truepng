@@ -13,8 +13,8 @@
 # along with this software. If not, see
 # <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-exedir="/usr/share/truepng"
-exefile="TruePNG.exe"
+truepng_dir="/usr/share/truepng"
+truepng_file="TruePNG.exe"
 
 # check if requirements are installed (wine and TruePNG.exe)
 which wine >/dev/null 2>&1 ||
@@ -23,10 +23,10 @@ which wine >/dev/null 2>&1 ||
     echo "       please install wine" >&2;
     exit 1;
 }
-test -f "${exedir}/${exefile}" ||
+test -f "${truepng_dir}/${truepng_file}" ||
 {
-    echo "error: ${exefile} not found"        >&2;
-    echo "       please copy it to ${exedir}" >&2;
+    echo "error: ${truepng_file} not found"        >&2;
+    echo "       please copy it to ${truepng_dir}" >&2;
     exit 1;
 }
 
@@ -44,14 +44,14 @@ do
         pngfiles="${pngfiles} ${HOME}"/.wine/dosdevices/z\:"$filepath"
     else
         # if not a valid file, just store it (should be an option)
-        options="${options} ${arg}"
+        truepng_opts="${truepng_opts} ${arg}"
     fi
 done
 
 # delete the first character of strings (a blank character)
-pngfiles="$(printf %s "$pngfiles" | sed 's/.//')"
- options="$(printf %s "$options"  | sed 's/.//')"
+     pngfiles="$(printf %s "$pngfiles"     | sed 's/.//')"
+ truepng_opts="$(printf %s "$truepng_opts" | sed 's/.//')"
 
 # execute TruePNG through wine
-cd "$exedir"
-wine ./"$exefile" $options $pngfiles
+cd "$truepng_dir"
+wine ./"$truepng_file" $truepng_opts $pngfiles
