@@ -17,7 +17,7 @@ truepng_dir='/usr/share/truepng'
 truepng_file='TruePNG.exe'
 
 # check if requirements are installed (wine and TruePNG.exe)
-which wine >/dev/null 2>&1 ||
+command -v wine >/dev/null 2>&1 ||
 {
     echo 'error: wine not found'      >&2;
     echo '       please install wine' >&2;

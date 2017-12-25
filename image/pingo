@@ -17,7 +17,7 @@ pingo_dir='/usr/share/pingo'
 pingo_file='pingo.exe'
 
 # check if requirements are installed (wine and pingo.exe)
-which wine >/dev/null 2>&1 ||
+command -v wine >/dev/null 2>&1 ||
 {
     echo 'error: wine not found'      >&2;
     echo '       please install wine' >&2;
