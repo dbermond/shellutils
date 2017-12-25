@@ -26,6 +26,17 @@ cd_error() {
     exit 1
 }
 
+# enable some options if the executing shell is zsh
+if [ -n "$ZSH_VERSION" ] 
+then
+    command -v setopt >/dev/null 2>&1 ||
+    {
+        printf '%s\n' 'script appears to be running in zsh but setopt was not found';
+        exit 1;
+    }
+    setopt SH_WORD_SPLIT # enable variable word splitting
+fi
+
 # check if requirements are installed (wine and pingo.exe)
 command -v wine >/dev/null 2>&1 ||
 {
