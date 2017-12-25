@@ -19,14 +19,14 @@ truepng_file='TruePNG.exe'
 # check if requirements are installed (wine and TruePNG.exe)
 command -v wine >/dev/null 2>&1 ||
 {
-    echo 'error: wine not found'      >&2;
-    echo '       please install wine' >&2;
+    printf '%s\n' 'error: wine not found'      >&2;
+    printf '%s\n' '       please install wine' >&2;
     exit 1;
 }
 test -f "${truepng_dir}/${truepng_file}" ||
 {
-    echo "error: '${truepng_file}' not found"        >&2;
-    echo "       please copy it to '${truepng_dir}'" >&2;
+    printf '%s\n' "error: '${truepng_file}' not found"        >&2;
+    printf '%s\n' "       please copy it to '${truepng_dir}'" >&2;
     exit 1;
 }
 
@@ -40,7 +40,7 @@ do
     if [ -f "$arg" ] 
     then
         # map path for wine using default WINEPREFIX
-        filepath="$(echo "$(cd "$(dirname "$arg")"; pwd)/$(basename "$arg")")"
+        filepath="$(printf '%s' "$(cd "$(dirname "$arg")"; pwd)/$(basename "$arg")")"
         pngfiles="${pngfiles} ${HOME}"/.wine/dosdevices/z\:"$filepath"
     else
         # if not a valid file, just store it (should be an option)
