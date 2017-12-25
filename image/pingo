@@ -62,7 +62,8 @@ do
     then
         # map path for wine using default WINEPREFIX
         fullpath="$(printf '%s' "$(cd "$(dirname "$arg")" || cd_error "$(dirname "$arg")"; pwd)/$(basename "$arg")")"
-        imgfiles="${imgfiles} ${HOME}"/.wine/dosdevices/z\:"$fullpath"
+        imgfiles="${imgfiles} ${HOME}/.wine/dosdevices/z:${fullpath}
+"
     else
         # if not a valid file, just store it (should be an option)
         pingo_opts="${pingo_opts} ${arg}"
@@ -75,4 +76,6 @@ done
 
 # execute pingo through wine
 cd "$pingo_dir" || cd_error "$pingo_dir"
+IFS='
+'
 wine ./"$pingo_file" $pingo_opts $imgfiles

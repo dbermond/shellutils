@@ -62,7 +62,8 @@ do
     then
         # map path for wine using default WINEPREFIX
         fullpath="$(printf '%s' "$(cd "$(dirname "$arg")" || cd_error "$(dirname "$arg")"; pwd)/$(basename "$arg")")"
-        pngfiles="${pngfiles} ${HOME}"/.wine/dosdevices/z\:"$fullpath"
+        pngfiles="${pngfiles} ${HOME}/.wine/dosdevices/z:${fullpath}
+"
     else
         # if not a valid file, just store it (should be an option)
         truepng_opts="${truepng_opts} ${arg}"
@@ -75,4 +76,6 @@ done
 
 # execute TruePNG through wine
 cd "$truepng_dir" || cd_error "$truepng_dir"
+IFS='
+'
 wine ./"$truepng_file" $truepng_opts $pngfiles
