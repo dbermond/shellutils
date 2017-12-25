@@ -37,7 +37,7 @@ test -f "${pingo_dir}/${pingo_file}" ||
 for arg in "$@"
 do
     # test if command line argument is a valid file
-    if [ -f "$arg" ] ;
+    if [ -f "$arg" ] 
     then
         # map path for wine using default WINEPREFIX
         filepath="$(echo "$(cd "$(dirname "$arg")"; pwd)/$(basename "$arg")")"
